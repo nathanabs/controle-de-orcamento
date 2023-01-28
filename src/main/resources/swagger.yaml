@@ -1,0 +1,82 @@
+openapi: 3.0.1
+info:
+  title: Artigo
+  description: Controle de orçamento
+  version: 1.0.0
+servers:
+  - url: /v1
+paths:
+  /receitas:
+    get:
+      summary: recuperar receitas
+      operationId: getReceitas
+      tags:
+        - Receitas
+      responses:
+        200:
+          description: sucesso
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ReceitasResponse'
+    post:
+      summary: Inserir uma receita
+      operationId: addReceita
+      tags:
+        - Receitas
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Receita'
+        required: true
+      responses:
+        200:
+          description: sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Receita'
+
+components:
+  schemas:
+
+    ReceitasResponse:
+      type: object
+      properties:
+        receitas:
+          type: array
+          items:
+            $ref: '#/components/schemas/Receita'
+
+    Receita:
+      type: object
+      properties:
+        id:
+          type: string
+          format: int64
+        descricao:
+          type: string
+          example: Descricao da receita
+        valor:
+          type: number
+        data:
+          type: string
+          format: 'date-time'
+
+    Despesa:
+      type: object
+      properties:
+        id:
+          type: string
+          format: int64
+        descricao:
+          type: string
+          example: Descricao da despesa
+        valor:
+          type: number
+        data:
+          type: string
+          format: 'date-time'
