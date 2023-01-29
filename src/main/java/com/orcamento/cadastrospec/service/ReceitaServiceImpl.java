@@ -7,13 +7,11 @@ import com.orcamento.cadastrospec.model.ReceitaModel;
 import com.orcamento.cadastrospec.model.ReceitasResponse;
 import com.orcamento.cadastrospec.repositories.ReceitaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-
-import java.util.stream.Collectors;
 
 
 @Service
@@ -57,5 +55,16 @@ public class ReceitaServiceImpl implements ReceitaService{
         return ReceitasResponse.builder()
                 .receitas(receitas)
                 .build();
+    }
+
+    @Override
+    public Receita buscarReceita(String id) {
+        var receita = repository.findById(id);
+
+        if (receita.isEmpty()) {
+            throw new ReceitaException("Receita não encontrada", HttpStatus.NOT_FOUND);
+        }
+
+        return ReceitaMapper.receitaModelToResponse(receita.get());
     }
 }

@@ -8,4 +8,6 @@ public interface ReceitaService {
     Receita criarReceita(Receita receita);
 
     ReceitasResponse buscarReceitas();
+
+    Receita buscarReceita(String id);
 }
