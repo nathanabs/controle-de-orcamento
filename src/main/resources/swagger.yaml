@@ -18,9 +18,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/ReceitasResponse'
+                $ref: '#/components/schemas/ReceitasResponse'
     post:
       summary: Inserir uma receita
       operationId: addReceita

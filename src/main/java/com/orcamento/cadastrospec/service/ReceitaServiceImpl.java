@@ -4,12 +4,17 @@ import com.orcamento.cadastrospec.exception.ReceitaException;
 import com.orcamento.cadastrospec.mapper.ReceitaMapper;
 import com.orcamento.cadastrospec.model.Receita;
 import com.orcamento.cadastrospec.model.ReceitaModel;
+import com.orcamento.cadastrospec.model.ReceitasResponse;
 import com.orcamento.cadastrospec.repositories.ReceitaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
+
+import java.util.stream.Collectors;
+
 
 @Service
 public class ReceitaServiceImpl implements ReceitaService{
@@ -41,5 +46,16 @@ public class ReceitaServiceImpl implements ReceitaService{
 
         var receitaMongo = repository.insert(model);
         return ReceitaMapper.receitaModelToResponse(receitaMongo);
+    }
+
+    @Override
+    public ReceitasResponse buscarReceitas() {
+        var receitasModel = repository.findAll();
+
+        var receitas = receitasModel.stream().map(ReceitaMapper::receitaModelToResponse).toList();
+
+        return ReceitasResponse.builder()
+                .receitas(receitas)
+                .build();
     }
 }
