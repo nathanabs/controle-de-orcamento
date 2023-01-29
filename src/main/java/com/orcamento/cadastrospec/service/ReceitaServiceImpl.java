@@ -36,7 +36,7 @@ public class ReceitaServiceImpl implements ReceitaService{
         var receitas = mongoTemplate.find(query, ReceitaModel.class);
 
         if (receitas.size() > 0){
-            throw new ReceitaException("Já existem receitas com essa descrição no mês");
+            throw new ReceitaException("Existe uma receita com essa descrição no mês");
         }
 
         var receitaMongo = repository.insert(model);
