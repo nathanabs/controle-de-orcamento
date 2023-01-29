@@ -7,6 +7,7 @@ public class ReceitaMapper {
 
     public static ReceitaModel receitaToModel(Receita receita){
         return ReceitaModel.builder()
+                .id(receita.getId())
                 .descricao(receita.getDescricao())
                 .valor(receita.getValor())
                 .data(receita.getData())

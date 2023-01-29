@@ -9,8 +9,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-
 @RestController
 public class ReceitasApiImpl implements ReceitasApi {
 
@@ -20,6 +18,11 @@ public class ReceitasApiImpl implements ReceitasApi {
     @Override
     public ResponseEntity<Receita> addReceita(Receita receita) {
         return ResponseEntity.status(HttpStatus.CREATED).body(service.criarReceita(receita));
+    }
+
+    @Override
+    public ResponseEntity<Receita> atualizarReceita(String id, Receita receita) {
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(service.atualizarReceita(id, receita));
     }
 
     @Override

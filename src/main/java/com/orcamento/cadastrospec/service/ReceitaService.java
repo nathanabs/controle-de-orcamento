@@ -10,4 +10,6 @@ public interface ReceitaService {
     ReceitasResponse buscarReceitas();
 
     Receita buscarReceita(String id);
+
+    Receita atualizarReceita(String id, Receita receita);
 }
