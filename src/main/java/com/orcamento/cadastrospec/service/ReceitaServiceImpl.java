@@ -1,6 +1,6 @@
 package com.orcamento.cadastrospec.service;
 
-import com.orcamento.cadastrospec.ReceitaException;
+import com.orcamento.cadastrospec.exception.ReceitaException;
 import com.orcamento.cadastrospec.mapper.ReceitaMapper;
 import com.orcamento.cadastrospec.model.Receita;
 import com.orcamento.cadastrospec.model.ReceitaModel;
