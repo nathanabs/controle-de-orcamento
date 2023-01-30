@@ -2,10 +2,10 @@ package com.orcamento.cadastrospec.service.impl;
 
 import com.orcamento.cadastrospec.exception.ReceitaException;
 import com.orcamento.cadastrospec.mapper.DespesaMapper;
-import com.orcamento.cadastrospec.mapper.ReceitaMapper;
-import com.orcamento.cadastrospec.model.*;
+import com.orcamento.cadastrospec.model.Despesa;
+import com.orcamento.cadastrospec.model.DespesaModel;
+import com.orcamento.cadastrospec.model.DespesasResponse;
 import com.orcamento.cadastrospec.repositories.DespesaRepository;
-import com.orcamento.cadastrospec.repositories.ReceitaRepository;
 import com.orcamento.cadastrospec.service.DespesaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -18,7 +18,8 @@ import org.springframework.stereotype.Service;
 import java.util.Locale;
 import java.util.Optional;
 
-import static com.orcamento.cadastrospec.constants.AppConstants.Erros.*;
+import static com.orcamento.cadastrospec.constants.AppConstants.Erros.DESPESA_DUPLICADA;
+import static com.orcamento.cadastrospec.constants.AppConstants.Erros.DESPESA_NAO_ENCONTRADA;
 
 @Service
 public class DespesaServiceImpl implements DespesaService {
