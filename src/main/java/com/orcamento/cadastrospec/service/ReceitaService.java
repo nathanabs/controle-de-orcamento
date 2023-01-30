@@ -12,4 +12,6 @@ public interface ReceitaService {
     Receita buscarReceita(String id);
 
     Receita atualizarReceita(String id, Receita receita);
+
+    void deletarReceita(String id);
 }

@@ -8,7 +8,7 @@ servers:
 paths:
   /receitas:
     get:
-      summary: recuperar receitas
+      summary: Recuperar receitas
       operationId: getReceitas
       tags:
         - Receitas
@@ -31,7 +31,7 @@ paths:
               $ref: '#/components/schemas/Receita'
         required: true
       responses:
-        200:
+        201:
           description: sucesso
           content:
             application/json:
@@ -40,7 +40,7 @@ paths:
 
   /receitas/{id}:
     get:
-      summary: recuperar receita
+      summary: Recuperar receita
       operationId: getReceita
       tags:
         - Receitas
@@ -56,7 +56,7 @@ paths:
 
     put:
       summary: Atualizar receita
-      operationId: atualizarReceita
+      operationId: AtualizarReceita
       tags:
         - Receitas
       parameters:
@@ -67,12 +67,102 @@ paths:
             schema:
               $ref: '#/components/schemas/Receita'
       responses:
-        200:
+        202:
           description: sucesso
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Receita'
+
+    delete:
+      summary: Deletar receita
+      operationId: DeleteReceita
+      tags:
+        - Receitas
+      parameters:
+        - $ref: '#/components/parameters/id'
+      responses:
+        202:
+          description: sucesso
+
+  /despesas:
+    get:
+      summary: Recuperar despesas
+      operationId: getDespesas
+      tags:
+        - Despesas
+      responses:
+        200:
+          description: sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DespesasResponse'
+    post:
+      summary: Inserir uma receita
+      operationId: addDespesa
+      tags:
+        - Despesas
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Despesa'
+        required: true
+      responses:
+        200:
+          description: sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Despesa'
+
+  /despesas/{id}:
+    get:
+      summary: Recuperar despesa
+      operationId: getDespesa
+      tags:
+        - Despesas
+      parameters:
+        - $ref: '#/components/parameters/id'
+      responses:
+        200:
+          description: sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Despesa'
+
+    put:
+      summary: Atualizar despesa
+      operationId: AtualizarDespesa
+      tags:
+        - Despesas
+      parameters:
+        - $ref: '#/components/parameters/id'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Despesa'
+      responses:
+        200:
+          description: sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Despesa'
+
+    delete:
+      summary: Deletar despesa
+      operationId: DeleteDespesa
+      tags:
+        - Despesas
+      parameters:
+        - $ref: '#/components/parameters/id'
+      responses:
+        202:
+          description: sucesso
 
 components:
   parameters:
@@ -107,6 +197,15 @@ components:
         data:
           type: string
           format: 'date-time'
+
+
+    DespesasResponse:
+      type: object
+      properties:
+        despesas:
+          type: array
+          items:
+            $ref: '#/components/schemas/Despesa'
 
     Despesa:
       type: object

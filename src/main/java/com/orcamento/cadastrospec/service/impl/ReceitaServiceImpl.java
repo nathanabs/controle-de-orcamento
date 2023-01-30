@@ -1,4 +1,4 @@
-package com.orcamento.cadastrospec.service;
+package com.orcamento.cadastrospec.service.impl;
 
 import com.orcamento.cadastrospec.exception.ReceitaException;
 import com.orcamento.cadastrospec.mapper.ReceitaMapper;
@@ -6,14 +6,20 @@ import com.orcamento.cadastrospec.model.Receita;
 import com.orcamento.cadastrospec.model.ReceitaModel;
 import com.orcamento.cadastrospec.model.ReceitasResponse;
 import com.orcamento.cadastrospec.repositories.ReceitaRepository;
+import com.orcamento.cadastrospec.service.ReceitaService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.Locale;
 import java.util.Optional;
+
+import static com.orcamento.cadastrospec.constants.AppConstants.Erros.RECEITA_DUPLICADA;
+import static com.orcamento.cadastrospec.constants.AppConstants.Erros.RECEITA_NAO_ENCONTRADA;
 
 
 @Service
@@ -24,6 +30,9 @@ public class ReceitaServiceImpl implements ReceitaService {
 
     @Autowired
     private MongoTemplate mongoTemplate;
+
+    @Autowired
+    private MessageSource messageSource;
 
     @Override
     public Receita criarReceita(Receita receita) {
@@ -51,12 +60,12 @@ public class ReceitaServiceImpl implements ReceitaService {
         Optional<ReceitaModel> receitaOpt = repository.findById(id);
 
         return receitaOpt.map(ReceitaMapper::receitaModelToResponse)
-                .orElseThrow(() -> new ReceitaException("Receita não encontrada", HttpStatus.NOT_FOUND));
+                .orElseThrow(() -> new ReceitaException(messageSource.getMessage(RECEITA_NAO_ENCONTRADA, null, Locale.getDefault()), HttpStatus.NOT_FOUND));
     }
 
     @Override
     public Receita atualizarReceita(String id, Receita receita) {
-        var receitaModel = repository.findById(id).orElseThrow(() -> new ReceitaException("Receita não encontrada", HttpStatus.NOT_FOUND));
+        var receitaModel = repository.findById(id).orElseThrow(() -> new ReceitaException(messageSource.getMessage(RECEITA_NAO_ENCONTRADA, null, Locale.getDefault()), HttpStatus.NOT_FOUND));
 
         verificaReceitaDuplicada(receita);
 
@@ -66,6 +75,13 @@ public class ReceitaServiceImpl implements ReceitaService {
 
         var receitaMongo = repository.save(receitaModel);
         return ReceitaMapper.receitaModelToResponse(receitaMongo);
+    }
+
+    @Override
+    public void deletarReceita(String id) {
+        var receitaModel = repository.findById(id).orElseThrow(() -> new ReceitaException(messageSource.getMessage(RECEITA_NAO_ENCONTRADA, null, Locale.getDefault()), HttpStatus.NOT_FOUND));
+
+        repository.delete(receitaModel);
     }
 
     private void verificaReceitaDuplicada(Receita receita) {
@@ -81,7 +97,7 @@ public class ReceitaServiceImpl implements ReceitaService {
         var exists = mongoTemplate.exists(query, ReceitaModel.class);
 
         if (exists){
-            throw new ReceitaException("Existe uma receita com essa descrição no mês");
+            throw new ReceitaException(messageSource.getMessage(RECEITA_DUPLICADA, null, Locale.getDefault()));
         }
     }
 }

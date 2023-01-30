@@ -34,4 +34,10 @@ public class ReceitasApiImpl implements ReceitasApi {
     public ResponseEntity<Receita> getReceita(String id) {
         return ResponseEntity.ok(service.buscarReceita(id));
     }
+
+    @Override
+    public ResponseEntity<Void> deleteReceita(String id) {
+        service.deletarReceita(id);
+        return ResponseEntity.ok(null);
+    }
 }
