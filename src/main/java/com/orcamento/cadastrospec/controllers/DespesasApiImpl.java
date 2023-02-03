@@ -8,19 +8,19 @@ import com.orcamento.cadastrospec.model.Receita;
 import com.orcamento.cadastrospec.model.ReceitasResponse;
 import com.orcamento.cadastrospec.service.DespesaService;
 import com.orcamento.cadastrospec.service.ReceitaService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequiredArgsConstructor
 public class DespesasApiImpl implements DespesasApi {
 
-    @Autowired
-    private DespesaService service;
+    private final DespesaService service;
 
-    @Override
-    public ResponseEntity<Despesa> addDespesa(Despesa despesa) {
+    public final ResponseEntity<Despesa> addDespesa(Despesa despesa) {
         return ResponseEntity.status(HttpStatus.CREATED).body(service.criarDespesa(despesa));
     }
 

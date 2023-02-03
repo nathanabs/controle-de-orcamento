@@ -7,6 +7,7 @@ import com.orcamento.cadastrospec.model.ReceitaModel;
 import com.orcamento.cadastrospec.model.ReceitasResponse;
 import com.orcamento.cadastrospec.repositories.ReceitaRepository;
 import com.orcamento.cadastrospec.service.ReceitaService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -23,16 +24,14 @@ import static com.orcamento.cadastrospec.constants.AppConstants.Erros.RECEITA_NA
 
 
 @Service
+@RequiredArgsConstructor
 public class ReceitaServiceImpl implements ReceitaService {
 
-    @Autowired
-    private ReceitaRepository repository;
+    private final ReceitaRepository repository;
 
-    @Autowired
-    private MongoTemplate mongoTemplate;
+    private final MongoTemplate mongoTemplate;
 
-    @Autowired
-    private MessageSource messageSource;
+    private final MessageSource messageSource;
 
     @Override
     public Receita criarReceita(Receita receita) {

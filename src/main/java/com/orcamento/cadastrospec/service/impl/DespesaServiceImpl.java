@@ -8,7 +8,7 @@ import com.orcamento.cadastrospec.model.DespesaModel;
 import com.orcamento.cadastrospec.model.DespesasResponse;
 import com.orcamento.cadastrospec.repositories.DespesaRepository;
 import com.orcamento.cadastrospec.service.DespesaService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -23,15 +23,13 @@ import static com.orcamento.cadastrospec.constants.AppConstants.Erros.DESPESA_DU
 import static com.orcamento.cadastrospec.constants.AppConstants.Erros.DESPESA_NAO_ENCONTRADA;
 
 @Service
+@RequiredArgsConstructor
 public class DespesaServiceImpl implements DespesaService {
-    @Autowired
-    private DespesaRepository repository;
+    private final DespesaRepository repository;
 
-    @Autowired
-    private MongoTemplate mongoTemplate;
+    private final MongoTemplate mongoTemplate;
 
-    @Autowired
-    private MessageSource messageSource;
+    private final MessageSource messageSource;
 
     @Override
     public Despesa criarDespesa(Despesa despesa) {
