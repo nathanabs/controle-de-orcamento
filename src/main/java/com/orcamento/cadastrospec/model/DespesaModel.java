@@ -1,5 +1,6 @@
 package com.orcamento.cadastrospec.model;
 
+import com.orcamento.cadastrospec.enums.Categoria;
 import lombok.Builder;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
@@ -21,4 +22,6 @@ public class DespesaModel {
     private BigDecimal valor;
 
     private LocalDateTime data;
+
+    private Categoria categoria;
 }

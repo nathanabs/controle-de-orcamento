@@ -2,6 +2,7 @@ package com.orcamento.cadastrospec.service.impl;
 
 import com.orcamento.cadastrospec.exception.ReceitaException;
 import com.orcamento.cadastrospec.mapper.DespesaMapper;
+import com.orcamento.cadastrospec.model.Categoria;
 import com.orcamento.cadastrospec.model.Despesa;
 import com.orcamento.cadastrospec.model.DespesaModel;
 import com.orcamento.cadastrospec.model.DespesasResponse;
@@ -34,6 +35,10 @@ public class DespesaServiceImpl implements DespesaService {
 
     @Override
     public Despesa criarDespesa(Despesa despesa) {
+
+        if (despesa.getCategoria() == null){
+            despesa.setCategoria(Categoria.OUTRAS);
+        }
         var model = DespesaMapper.despesaToModel(despesa);
 
         verificaReceitaDuplicada(despesa);

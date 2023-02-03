@@ -221,3 +221,10 @@ components:
         data:
           type: string
           format: 'date-time'
+        categoria:
+          $ref: '#/components/schemas/Categoria'
+
+    Categoria:
+      type: string
+      x-enum-varnames: [ ALIMENTACAO, SAUDE, MORADIA, TRANSPORTE, EDUCACAO, LAZER, IMPREVISTOS, OUTRAS ]
+      enum: [ "Alimentação", "Saúde", "Moradia", "Transporte", "Educação", " Lazer", "Imprevistos", "Outras" ]

@@ -1,5 +1,6 @@
 package com.orcamento.cadastrospec.mapper;
 
+import com.orcamento.cadastrospec.enums.Categoria;
 import com.orcamento.cadastrospec.model.Despesa;
 import com.orcamento.cadastrospec.model.DespesaModel;
 import com.orcamento.cadastrospec.model.Receita;
@@ -13,6 +14,7 @@ public class DespesaMapper {
                 .descricao(despesa.getDescricao())
                 .valor(despesa.getValor())
                 .data(despesa.getData())
+                .categoria(Categoria.fromValue(despesa.getCategoria().getValue()))
                 .build();
     }
 
@@ -22,6 +24,7 @@ public class DespesaMapper {
                 .descricao(despesa.getDescricao())
                 .valor(despesa.getValor())
                 .data(despesa.getData())
+                .categoria(com.orcamento.cadastrospec.model.Categoria.fromValue(despesa.getCategoria().getValue()))
                 .build();
     }
 }
