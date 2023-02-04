@@ -40,4 +40,9 @@ public class ReceitasApiImpl implements ReceitasApi {
         service.deletarReceita(id);
         return ResponseEntity.ok(null);
     }
+
+    @Override
+    public ResponseEntity<ReceitasResponse> getReceitasMensal(Integer mes, Integer ano) {
+        return ResponseEntity.ok(service.buscarReceitasMensais(mes, ano));
+    }
 }

@@ -7,6 +7,7 @@ import com.orcamento.cadastrospec.model.ReceitaModel;
 import com.orcamento.cadastrospec.model.ReceitasResponse;
 import com.orcamento.cadastrospec.repositories.ReceitaRepository;
 import com.orcamento.cadastrospec.service.ReceitaService;
+import com.orcamento.cadastrospec.utils.DateUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -80,6 +81,20 @@ public class ReceitaServiceImpl implements ReceitaService {
         var receitaModel = repository.findById(id).orElseThrow(() -> new ReceitaException(messageSource.getMessage(RECEITA_NAO_ENCONTRADA, null, Locale.getDefault()), HttpStatus.NOT_FOUND));
 
         repository.delete(receitaModel);
+    }
+
+    @Override
+    public ReceitasResponse buscarReceitasMensais(Integer mes, Integer ano) {
+        var dataInicial = DateUtils.criarData(mes, ano);
+        var dataFinal = dataInicial.plusMonths(1);
+
+        var receitas = repository.buscarReceitasMensais(dataInicial, dataFinal);
+
+        var response = receitas.stream().map(ReceitaMapper::receitaModelToResponse).toList();
+
+        return ReceitasResponse.builder()
+                .receitas(response)
+                .build();
     }
 
     private void verificaReceitaDuplicada(Receita receita) {

@@ -14,4 +14,7 @@ public interface ReceitaService {
     Receita atualizarReceita(String id, Receita receita);
 
     void deletarReceita(String id);
+
+    ReceitasResponse buscarReceitasMensais(Integer mes, Integer ano);
+
 }

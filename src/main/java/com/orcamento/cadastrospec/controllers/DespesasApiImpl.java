@@ -15,6 +15,11 @@ public class DespesasApiImpl implements DespesasApi {
 
     private final DespesaService service;
 
+    @Override
+    public ResponseEntity<DespesasResponse> getDespesasMensal(Integer mes, Integer ano) {
+        return ResponseEntity.ok(service.buscarReceitasMensais(mes, ano));
+    }
+
     public final ResponseEntity<Despesa> addDespesa(Despesa despesa) {
         return ResponseEntity.status(HttpStatus.CREATED).body(service.criarDespesa(despesa));
     }

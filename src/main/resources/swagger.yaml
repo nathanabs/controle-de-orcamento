@@ -85,6 +85,23 @@ paths:
         202:
           description: sucesso
 
+  /receitas/{mes}/{ano}:
+    get:
+      summary: Recuperar receitas do mês
+      operationId: getReceitasMensal
+      tags:
+        - Receitas
+      parameters:
+        - $ref: '#/components/parameters/mes'
+        - $ref: '#/components/parameters/ano'
+      responses:
+        200:
+          description: sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReceitasResponse'
+
   /despesas:
     get:
       summary: Recuperar despesas
@@ -164,6 +181,23 @@ paths:
         202:
           description: sucesso
 
+  /despesas/{mes}/{ano}:
+    get:
+      summary: Recuperar despesas do mês
+      operationId: getDespesasMensal
+      tags:
+        - Receitas
+      parameters:
+        - $ref: '#/components/parameters/mes'
+        - $ref: '#/components/parameters/ano'
+      responses:
+        200:
+          description: sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DespesasResponse'
+
 components:
   parameters:
     id:
@@ -172,6 +206,20 @@ components:
       required: true
       schema:
         type: string
+
+    mes:
+      in: path
+      name: mes
+      required: true
+      schema:
+        type: integer
+
+    ano:
+      in: path
+      name: ano
+      required: true
+      schema:
+        type: integer
 
   schemas:
 
