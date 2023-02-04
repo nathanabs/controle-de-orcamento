@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Data
 @Builder
 @Document(value = "Despesa")
-public class DespesaModel {
+public class Despesa {
 
     @Id
     private String id;

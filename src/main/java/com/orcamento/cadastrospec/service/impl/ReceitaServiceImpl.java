@@ -2,8 +2,8 @@ package com.orcamento.cadastrospec.service.impl;
 
 import com.orcamento.cadastrospec.exception.ReceitaException;
 import com.orcamento.cadastrospec.mapper.ReceitaMapper;
+import com.orcamento.cadastrospec.model.ReceitaDTO;
 import com.orcamento.cadastrospec.model.Receita;
-import com.orcamento.cadastrospec.model.ReceitaModel;
 import com.orcamento.cadastrospec.model.ReceitasResponse;
 import com.orcamento.cadastrospec.repositories.ReceitaRepository;
 import com.orcamento.cadastrospec.service.ReceitaService;
@@ -35,12 +35,12 @@ public class ReceitaServiceImpl implements ReceitaService {
     private final MessageSource messageSource;
 
     @Override
-    public Receita criarReceita(Receita receita) {
-        ReceitaModel model = ReceitaMapper.receitaToModel(receita);
+    public ReceitaDTO criarReceita(ReceitaDTO receitaDto) {
+        Receita receita = ReceitaMapper.receitaToModel(receitaDto);
 
-        verificaReceitaDuplicada(receita);
+        verificaReceitaDuplicada(receitaDto);
 
-        var receitaMongo = repository.insert(model);
+        var receitaMongo = repository.insert(receita);
         return ReceitaMapper.receitaModelToResponse(receitaMongo);
     }
 
@@ -52,42 +52,42 @@ public class ReceitaServiceImpl implements ReceitaService {
             query.addCriteria(Criteria.where("descricao").regex(".*" + descricao + ".*","i"));
         }
 
-        var receitasModel = mongoTemplate.find(query, ReceitaModel.class);
+        var receitas = mongoTemplate.find(query, Receita.class);
 
-        var receitas = receitasModel.stream().map(ReceitaMapper::receitaModelToResponse).toList();
+        var receitasDto = receitas.stream().map(ReceitaMapper::receitaModelToResponse).toList();
 
         return ReceitasResponse.builder()
-                .receitas(receitas)
+                .receitas(receitasDto)
                 .build();
     }
 
     @Override
-    public Receita buscarReceita(String id) {
-        Optional<ReceitaModel> receitaOpt = repository.findById(id);
+    public ReceitaDTO buscarReceita(String id) {
+        Optional<Receita> receita = repository.findById(id);
 
-        return receitaOpt.map(ReceitaMapper::receitaModelToResponse)
+        return receita.map(ReceitaMapper::receitaModelToResponse)
                 .orElseThrow(() -> new ReceitaException(messageSource.getMessage(RECEITA_NAO_ENCONTRADA, null, Locale.getDefault()), HttpStatus.NOT_FOUND));
     }
 
     @Override
-    public Receita atualizarReceita(String id, Receita receita) {
-        var receitaModel = repository.findById(id).orElseThrow(() -> new ReceitaException(messageSource.getMessage(RECEITA_NAO_ENCONTRADA, null, Locale.getDefault()), HttpStatus.NOT_FOUND));
+    public ReceitaDTO atualizarReceita(String id, ReceitaDTO receitaDto) {
+        var receita = repository.findById(id).orElseThrow(() -> new ReceitaException(messageSource.getMessage(RECEITA_NAO_ENCONTRADA, null, Locale.getDefault()), HttpStatus.NOT_FOUND));
 
-        verificaReceitaDuplicada(receita);
+        verificaReceitaDuplicada(receitaDto);
 
-        receitaModel.setDescricao(receita.getDescricao());
-        receitaModel.setValor(receita.getValor());
-        receitaModel.setData(receita.getData());
+        receita.setDescricao(receitaDto.getDescricao());
+        receita.setValor(receitaDto.getValor());
+        receita.setData(receitaDto.getData());
 
-        var receitaMongo = repository.save(receitaModel);
+        var receitaMongo = repository.save(receita);
         return ReceitaMapper.receitaModelToResponse(receitaMongo);
     }
 
     @Override
     public void deletarReceita(String id) {
-        var receitaModel = repository.findById(id).orElseThrow(() -> new ReceitaException(messageSource.getMessage(RECEITA_NAO_ENCONTRADA, null, Locale.getDefault()), HttpStatus.NOT_FOUND));
+        var receita = repository.findById(id).orElseThrow(() -> new ReceitaException(messageSource.getMessage(RECEITA_NAO_ENCONTRADA, null, Locale.getDefault()), HttpStatus.NOT_FOUND));
 
-        repository.delete(receitaModel);
+        repository.delete(receita);
     }
 
     @Override
@@ -97,14 +97,14 @@ public class ReceitaServiceImpl implements ReceitaService {
 
         var receitas = repository.buscarReceitasMensais(dataInicial, dataFinal);
 
-        var response = receitas.stream().map(ReceitaMapper::receitaModelToResponse).toList();
+        var receitasDto = receitas.stream().map(ReceitaMapper::receitaModelToResponse).toList();
 
         return ReceitasResponse.builder()
-                .receitas(response)
+                .receitas(receitasDto)
                 .build();
     }
 
-    private void verificaReceitaDuplicada(Receita receita) {
+    private void verificaReceitaDuplicada(ReceitaDTO receita) {
         Query query = new Query();
         var inicioDoMes = receita.getData().withDayOfMonth(1);
         var mesSeguinte = inicioDoMes.plusMonths(1);
@@ -114,7 +114,7 @@ public class ReceitaServiceImpl implements ReceitaService {
                         .lt(mesSeguinte))
                 .addCriteria(Criteria.where("descricao").is(receita.getDescricao()));
 
-        var exists = mongoTemplate.exists(query, ReceitaModel.class);
+        var exists = mongoTemplate.exists(query, Receita.class);
 
         if (exists){
             throw new ReceitaException(messageSource.getMessage(RECEITA_DUPLICADA, null, Locale.getDefault()));

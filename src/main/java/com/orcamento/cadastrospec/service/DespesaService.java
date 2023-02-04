@@ -1,17 +1,18 @@
 package com.orcamento.cadastrospec.service;
 
-import com.orcamento.cadastrospec.model.Despesa;
+
+import com.orcamento.cadastrospec.model.DespesaDTO;
 import com.orcamento.cadastrospec.model.DespesasResponse;
 
 public interface DespesaService {
 
-    Despesa criarDespesa(Despesa despesa);
+    DespesaDTO criarDespesa(DespesaDTO despesa);
 
     DespesasResponse buscarDespesas(String descricao);
 
-    Despesa buscarDespesa(String id);
+    DespesaDTO buscarDespesa(String id);
 
-    Despesa atualizarDespesa(String id, Despesa despesa);
+    DespesaDTO atualizarDespesa(String id, DespesaDTO despesa);
 
     void deletarDespesa(String id);
 

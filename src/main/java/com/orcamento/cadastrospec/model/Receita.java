@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Data
 @Builder
 @Document(value = "Receita")
-public class ReceitaModel {
+public class Receita {
 
     @Id
     private String id;

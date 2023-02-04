@@ -1,12 +1,12 @@
 package com.orcamento.cadastrospec.mapper;
 
+import com.orcamento.cadastrospec.model.ReceitaDTO;
 import com.orcamento.cadastrospec.model.Receita;
-import com.orcamento.cadastrospec.model.ReceitaModel;
 
 public class ReceitaMapper {
 
-    public static ReceitaModel receitaToModel(Receita receita){
-        return ReceitaModel.builder()
+    public static Receita receitaToModel(ReceitaDTO receita){
+        return Receita.builder()
                 .id(receita.getId())
                 .descricao(receita.getDescricao())
                 .valor(receita.getValor())
@@ -14,8 +14,8 @@ public class ReceitaMapper {
                 .build();
     }
 
-    public static Receita receitaModelToResponse(ReceitaModel receita){
-        return Receita.builder()
+    public static ReceitaDTO receitaModelToResponse(Receita receita){
+        return ReceitaDTO.builder()
                 .id(receita.getId())
                 .descricao(receita.getDescricao())
                 .valor(receita.getValor())

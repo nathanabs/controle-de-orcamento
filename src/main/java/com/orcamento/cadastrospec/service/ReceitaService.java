@@ -1,17 +1,17 @@
 package com.orcamento.cadastrospec.service;
 
-import com.orcamento.cadastrospec.model.Receita;
+import com.orcamento.cadastrospec.model.ReceitaDTO;
 import com.orcamento.cadastrospec.model.ReceitasResponse;
 
 public interface ReceitaService {
 
-    Receita criarReceita(Receita receita);
+    ReceitaDTO criarReceita(ReceitaDTO receita);
 
     ReceitasResponse buscarReceitas(String descricao);
 
-    Receita buscarReceita(String id);
+    ReceitaDTO buscarReceita(String id);
 
-    Receita atualizarReceita(String id, Receita receita);
+    ReceitaDTO atualizarReceita(String id, ReceitaDTO receita);
 
     void deletarReceita(String id);
 

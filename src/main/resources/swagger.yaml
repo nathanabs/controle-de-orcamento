@@ -30,7 +30,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Receita'
+              $ref: '#/components/schemas/ReceitaDTO'
         required: true
       responses:
         201:
@@ -38,7 +38,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Receita'
+                $ref: '#/components/schemas/ReceitaDTO'
 
   /receitas/{id}:
     get:
@@ -54,7 +54,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Receita'
+                $ref: '#/components/schemas/ReceitaDTO'
 
     put:
       summary: Atualizar receita
@@ -67,14 +67,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Receita'
+              $ref: '#/components/schemas/ReceitaDTO'
       responses:
         202:
           description: sucesso
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Receita'
+                $ref: '#/components/schemas/ReceitaDTO'
 
     delete:
       summary: Deletar receita
@@ -128,7 +128,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Despesa'
+              $ref: '#/components/schemas/DespesaDTO'
         required: true
       responses:
         200:
@@ -136,7 +136,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Despesa'
+                $ref: '#/components/schemas/DespesaDTO'
 
   /despesas/{id}:
     get:
@@ -152,7 +152,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Despesa'
+                $ref: '#/components/schemas/DespesaDTO'
 
     put:
       summary: Atualizar despesa
@@ -165,14 +165,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Despesa'
+              $ref: '#/components/schemas/DespesaDTO'
       responses:
         200:
           description: sucesso
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Despesa'
+                $ref: '#/components/schemas/DespesaDTO'
 
     delete:
       summary: Deletar despesa
@@ -240,9 +240,9 @@ components:
         receitas:
           type: array
           items:
-            $ref: '#/components/schemas/Receita'
+            $ref: '#/components/schemas/ReceitaDTO'
 
-    Receita:
+    ReceitaDTO:
       type: object
       properties:
         id:
@@ -264,9 +264,9 @@ components:
         despesas:
           type: array
           items:
-            $ref: '#/components/schemas/Despesa'
+            $ref: '#/components/schemas/DespesaDTO'
 
-    Despesa:
+    DespesaDTO:
       type: object
       properties:
         id:

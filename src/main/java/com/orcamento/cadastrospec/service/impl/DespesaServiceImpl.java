@@ -1,10 +1,10 @@
 package com.orcamento.cadastrospec.service.impl;
 
-import com.orcamento.cadastrospec.exception.ReceitaException;
+import com.orcamento.cadastrospec.exception.DespesaException;
 import com.orcamento.cadastrospec.mapper.DespesaMapper;
 import com.orcamento.cadastrospec.model.Categoria;
 import com.orcamento.cadastrospec.model.Despesa;
-import com.orcamento.cadastrospec.model.DespesaModel;
+import com.orcamento.cadastrospec.model.DespesaDTO;
 import com.orcamento.cadastrospec.model.DespesasResponse;
 import com.orcamento.cadastrospec.repositories.DespesaRepository;
 import com.orcamento.cadastrospec.service.DespesaService;
@@ -34,17 +34,17 @@ public class DespesaServiceImpl implements DespesaService {
     private final MessageSource messageSource;
 
     @Override
-    public Despesa criarDespesa(Despesa despesa) {
+    public DespesaDTO criarDespesa(DespesaDTO despesaDto) {
 
-        if (despesa.getCategoria() == null){
-            despesa.setCategoria(Categoria.OUTRAS);
+        if (despesaDto.getCategoria() == null){
+            despesaDto.setCategoria(Categoria.OUTRAS);
         }
-        var model = DespesaMapper.despesaToModel(despesa);
+        var despesa = DespesaMapper.despesaToModel(despesaDto);
 
-        verificaReceitaDuplicada(despesa);
+        verificaReceitaDuplicada(despesaDto);
 
-        var receitaMongo = repository.insert(model);
-        return DespesaMapper.despesaModelToResponse(receitaMongo);
+        var response = repository.insert(despesa);
+        return DespesaMapper.despesaModelToResponse(response);
     }
 
     @Override
@@ -55,42 +55,42 @@ public class DespesaServiceImpl implements DespesaService {
             query.addCriteria(Criteria.where("descricao").regex(".*" + descricao + ".*","i"));
         }
 
-        var despesaModels = mongoTemplate.find(query, DespesaModel.class);
+        var despesas = mongoTemplate.find(query, Despesa.class);
 
-        var despesas = despesaModels.stream().map(DespesaMapper::despesaModelToResponse).toList();
+        var despesasDto = despesas.stream().map(DespesaMapper::despesaModelToResponse).toList();
 
         return DespesasResponse.builder()
-                .despesas(despesas)
+                .despesas(despesasDto)
                 .build();
     }
 
     @Override
-    public Despesa buscarDespesa(String id) {
-        Optional<DespesaModel> receitaOpt = repository.findById(id);
+    public DespesaDTO buscarDespesa(String id) {
+        Optional<Despesa> despesa = repository.findById(id);
 
-        return receitaOpt.map(DespesaMapper::despesaModelToResponse)
-                .orElseThrow(() -> new ReceitaException(messageSource.getMessage(DESPESA_NAO_ENCONTRADA, null, Locale.getDefault()), HttpStatus.NOT_FOUND));
+        return despesa.map(DespesaMapper::despesaModelToResponse)
+                .orElseThrow(() -> new DespesaException(messageSource.getMessage(DESPESA_NAO_ENCONTRADA, null, Locale.getDefault()), HttpStatus.NOT_FOUND));
     }
 
     @Override
-    public Despesa atualizarDespesa(String id, Despesa despesa) {
-        var despesaModel = repository.findById(id).orElseThrow(() -> new ReceitaException(messageSource.getMessage(DESPESA_NAO_ENCONTRADA, null, Locale.getDefault()), HttpStatus.NOT_FOUND));
+    public DespesaDTO atualizarDespesa(String id, DespesaDTO despesaDto) {
+        var despesa = repository.findById(id).orElseThrow(() -> new DespesaException(messageSource.getMessage(DESPESA_NAO_ENCONTRADA, null, Locale.getDefault()), HttpStatus.NOT_FOUND));
 
-        verificaReceitaDuplicada(despesa);
+        verificaReceitaDuplicada(despesaDto);
 
-        despesaModel.setDescricao(despesa.getDescricao());
-        despesaModel.setValor(despesa.getValor());
-        despesaModel.setData(despesa.getData());
+        despesa.setDescricao(despesaDto.getDescricao());
+        despesa.setValor(despesaDto.getValor());
+        despesa.setData(despesaDto.getData());
 
-        var receitaMongo = repository.save(despesaModel);
+        var receitaMongo = repository.save(despesa);
         return DespesaMapper.despesaModelToResponse(receitaMongo);
     }
 
     @Override
     public void deletarDespesa(String id) {
-        var receitaModel = repository.findById(id).orElseThrow(() -> new ReceitaException(messageSource.getMessage(DESPESA_NAO_ENCONTRADA, null, Locale.getDefault()), HttpStatus.NOT_FOUND));
+        var despesa = repository.findById(id).orElseThrow(() -> new DespesaException(messageSource.getMessage(DESPESA_NAO_ENCONTRADA, null, Locale.getDefault()), HttpStatus.NOT_FOUND));
 
-        repository.delete(receitaModel);
+        repository.delete(despesa);
     }
 
     @Override
@@ -100,14 +100,14 @@ public class DespesaServiceImpl implements DespesaService {
 
         var despesas = repository.buscarReceitasMensais(dataInicial, dataFinal);
 
-        var response = despesas.stream().map(DespesaMapper::despesaModelToResponse).toList();
+        var despesaDto = despesas.stream().map(DespesaMapper::despesaModelToResponse).toList();
 
         return DespesasResponse.builder()
-                .despesas(response)
+                .despesas(despesaDto)
                 .build();
     }
 
-    private void verificaReceitaDuplicada(Despesa despesa) {
+    private void verificaReceitaDuplicada(DespesaDTO despesa) {
         Query query = new Query();
         var inicioDoMes = despesa.getData().withDayOfMonth(1);
         var mesSeguinte = inicioDoMes.plusMonths(1);
@@ -117,10 +117,10 @@ public class DespesaServiceImpl implements DespesaService {
                         .lt(mesSeguinte))
                 .addCriteria(Criteria.where("descricao").is(despesa.getDescricao()));
 
-        var exists = mongoTemplate.exists(query, DespesaModel.class);
+        var exists = mongoTemplate.exists(query, Despesa.class);
 
         if (exists){
-            throw new ReceitaException(messageSource.getMessage(DESPESA_DUPLICADA, null, Locale.getDefault()));
+            throw new DespesaException(messageSource.getMessage(DESPESA_DUPLICADA, null, Locale.getDefault()));
         }
     }
 }

@@ -1,7 +1,7 @@
 package com.orcamento.cadastrospec.controllers;
 
 import com.orcamento.cadastrospec.DespesasApi;
-import com.orcamento.cadastrospec.model.Despesa;
+import com.orcamento.cadastrospec.model.DespesaDTO;
 import com.orcamento.cadastrospec.model.DespesasResponse;
 import com.orcamento.cadastrospec.service.DespesaService;
 import lombok.RequiredArgsConstructor;
@@ -20,17 +20,17 @@ public class DespesasApiImpl implements DespesasApi {
         return ResponseEntity.ok(service.buscarReceitasMensais(mes, ano));
     }
 
-    public final ResponseEntity<Despesa> addDespesa(Despesa despesa) {
+    public final ResponseEntity<DespesaDTO> addDespesa(DespesaDTO despesa) {
         return ResponseEntity.status(HttpStatus.CREATED).body(service.criarDespesa(despesa));
     }
 
     @Override
-    public ResponseEntity<Despesa> atualizarDespesa(String id, Despesa despesa) {
+    public ResponseEntity<DespesaDTO> atualizarDespesa(String id, DespesaDTO despesa) {
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(service.atualizarDespesa(id, despesa));
     }
 
     @Override
-    public ResponseEntity<Despesa> getDespesa(String id) {
+    public ResponseEntity<DespesaDTO> getDespesa(String id) {
         return ResponseEntity.ok(service.buscarDespesa(id));
     }
 
