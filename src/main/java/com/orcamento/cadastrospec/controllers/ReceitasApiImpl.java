@@ -26,8 +26,8 @@ public class ReceitasApiImpl implements ReceitasApi {
     }
 
     @Override
-    public ResponseEntity<ReceitasResponse> getReceitas() {
-        return ResponseEntity.ok(service.buscarReceitas());
+    public ResponseEntity<ReceitasResponse> getReceitas(String descricao) {
+        return ResponseEntity.ok(service.buscarReceitas(descricao));
     }
 
     @Override

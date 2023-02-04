@@ -17,6 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.Locale;
+import java.util.Objects;
 import java.util.Optional;
 
 import static com.orcamento.cadastrospec.constants.AppConstants.Erros.RECEITA_DUPLICADA;
@@ -44,8 +45,14 @@ public class ReceitaServiceImpl implements ReceitaService {
     }
 
     @Override
-    public ReceitasResponse buscarReceitas() {
-        var receitasModel = repository.findAll();
+    public ReceitasResponse buscarReceitas(String descricao) {
+        Query query = new Query();
+
+        if (Objects.nonNull(descricao)){
+            query.addCriteria(Criteria.where("descricao").regex(".*" + descricao + ".*","i"));
+        }
+
+        var receitasModel = mongoTemplate.find(query, ReceitaModel.class);
 
         var receitas = receitasModel.stream().map(ReceitaMapper::receitaModelToResponse).toList();
 

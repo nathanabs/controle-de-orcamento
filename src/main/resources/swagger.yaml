@@ -12,6 +12,8 @@ paths:
       operationId: getReceitas
       tags:
         - Receitas
+      parameters:
+        - $ref: '#/components/parameters/descricao'
       responses:
         200:
           description: sucesso
@@ -186,7 +188,7 @@ paths:
       summary: Recuperar despesas do mês
       operationId: getDespesasMensal
       tags:
-        - Receitas
+        - Despesas
       parameters:
         - $ref: '#/components/parameters/mes'
         - $ref: '#/components/parameters/ano'
@@ -220,6 +222,13 @@ components:
       required: true
       schema:
         type: integer
+
+    descricao:
+      in: query
+      name: descricao
+      required: false
+      schema:
+        type: string
 
   schemas:
 
