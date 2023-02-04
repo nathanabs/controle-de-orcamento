@@ -35,8 +35,8 @@ public class DespesasApiImpl implements DespesasApi {
     }
 
     @Override
-    public ResponseEntity<DespesasResponse> getDespesas() {
-        return ResponseEntity.ok(service.buscarDespesas());
+    public ResponseEntity<DespesasResponse> getDespesas(String descricao) {
+        return ResponseEntity.ok(service.buscarDespesas(descricao));
     }
 
     @Override

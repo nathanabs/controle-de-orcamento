@@ -18,6 +18,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.Locale;
+import java.util.Objects;
 import java.util.Optional;
 
 import static com.orcamento.cadastrospec.constants.AppConstants.Erros.DESPESA_DUPLICADA;
@@ -47,8 +48,14 @@ public class DespesaServiceImpl implements DespesaService {
     }
 
     @Override
-    public DespesasResponse buscarDespesas() {
-        var despesaModels = repository.findAll();
+    public DespesasResponse buscarDespesas(String descricao) {
+        Query query = new Query();
+
+        if (Objects.nonNull(descricao)){
+            query.addCriteria(Criteria.where("descricao").regex(".*" + descricao + ".*","i"));
+        }
+
+        var despesaModels = mongoTemplate.find(query, DespesaModel.class);
 
         var despesas = despesaModels.stream().map(DespesaMapper::despesaModelToResponse).toList();
 

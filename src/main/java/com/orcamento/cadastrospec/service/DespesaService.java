@@ -7,7 +7,7 @@ public interface DespesaService {
 
     Despesa criarDespesa(Despesa despesa);
 
-    DespesasResponse buscarDespesas();
+    DespesasResponse buscarDespesas(String descricao);
 
     Despesa buscarDespesa(String id);
 

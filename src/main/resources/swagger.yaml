@@ -110,6 +110,8 @@ paths:
       operationId: getDespesas
       tags:
         - Despesas
+      parameters:
+        - $ref: '#/components/parameters/descricao'
       responses:
         200:
           description: sucesso
