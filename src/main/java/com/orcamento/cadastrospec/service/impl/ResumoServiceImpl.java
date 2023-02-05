@@ -31,7 +31,7 @@ public class ResumoServiceImpl implements ResumoService {
         var receitas = receitaRepository.buscarReceitasMensais(dataInicial, dataFinal);
         var despesas = despesaRepository.buscarReceitasMensais(dataInicial, dataFinal);
 
-        var totalReceitas = receitas.stream().map(Receita::getValor).reduce(BigDecimal.ZERO, BigDecimal::add);
+        var totalReceitas = getTotalReceitas(receitas);
         var totalDespesas = getTotalDespesas(despesas);
 
         var saldo = totalReceitas.subtract(totalDespesas);
@@ -44,7 +44,11 @@ public class ResumoServiceImpl implements ResumoService {
                 .build();
     }
 
-    private static BigDecimal getTotalDespesas(List<Despesa> despesas) {
+    private BigDecimal getTotalReceitas(List<Receita> receitas) {
+        return receitas.stream().map(Receita::getValor).reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    private BigDecimal getTotalDespesas(List<Despesa> despesas) {
         return despesas.stream().map(Despesa::getValor).reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
