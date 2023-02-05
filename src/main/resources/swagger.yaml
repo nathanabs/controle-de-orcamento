@@ -1,6 +1,6 @@
 openapi: 3.0.1
 info:
-  title: Artigo
+  title: Controle
   description: Controle de orçamento
   version: 1.0.0
 servers:
@@ -202,6 +202,24 @@ paths:
               schema:
                 $ref: '#/components/schemas/DespesasResponse'
 
+  /resumos/{mes}/{ano}:
+    get:
+      summary: Resumo das operações do mês
+      operationId: resumoMensal
+      tags:
+        - Resumos
+      parameters:
+        - $ref: '#/components/parameters/mes'
+        - $ref: '#/components/parameters/ano'
+      responses:
+        200:
+          description: sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResumoResponse'
+
+
 components:
   parameters:
     id:
@@ -287,3 +305,29 @@ components:
       type: string
       x-enum-varnames: [ ALIMENTACAO, SAUDE, MORADIA, TRANSPORTE, EDUCACAO, LAZER, IMPREVISTOS, OUTRAS ]
       enum: [ "Alimentação", "Saúde", "Moradia", "Transporte", "Educação", " Lazer", "Imprevistos", "Outras" ]
+
+    ResumoResponse:
+      type: object
+      properties:
+        totalReceita:
+          type: number
+          example: 100
+        totalDespesa:
+          type: number
+          example: 50
+        saldoFinal:
+          type: number
+          example: 50
+        valorCategoria:
+          type: array
+          items:
+            $ref: '#/components/schemas/ResumoCategoria'
+
+    ResumoCategoria:
+      type: object
+      properties:
+        categoria:
+          $ref: '#/components/schemas/Categoria'
+        valor:
+          type: number
+          example: 10
