@@ -26,7 +26,7 @@ public class DespesasApiImpl implements DespesasApi {
 
     @Override
     public ResponseEntity<DespesaDTO> atualizarDespesa(String id, DespesaDTO despesa) {
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(service.atualizarDespesa(id, despesa));
+        return ResponseEntity.ok(service.atualizarDespesa(id, despesa));
     }
 
     @Override
@@ -42,6 +42,6 @@ public class DespesasApiImpl implements DespesasApi {
     @Override
     public ResponseEntity<Void> deleteDespesa(String id) {
         service.deletarDespesa(id);
-        return ResponseEntity.ok(null);
+        return ResponseEntity.noContent().build();
     }
 }

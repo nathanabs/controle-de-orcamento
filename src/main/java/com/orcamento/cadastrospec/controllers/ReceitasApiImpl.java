@@ -22,7 +22,7 @@ public class ReceitasApiImpl implements ReceitasApi {
 
     @Override
     public ResponseEntity<ReceitaDTO> atualizarReceita(String id, ReceitaDTO receita) {
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(service.atualizarReceita(id, receita));
+        return ResponseEntity.ok(service.atualizarReceita(id, receita));
     }
 
     @Override
@@ -38,7 +38,7 @@ public class ReceitasApiImpl implements ReceitasApi {
     @Override
     public ResponseEntity<Void> deleteReceita(String id) {
         service.deletarReceita(id);
-        return ResponseEntity.ok(null);
+        return ResponseEntity.noContent().build();
     }
 
     @Override
