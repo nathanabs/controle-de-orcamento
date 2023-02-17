@@ -3,8 +3,6 @@ info:
   title: Controle
   description: Controle de orçamento
   version: 1.0.0
-servers:
-  - url: /v1
 paths:
   /receitas:
     get:
@@ -219,6 +217,22 @@ paths:
               schema:
                 $ref: '#/components/schemas/ResumoResponse'
 
+  /login:
+    post:
+      summary: Efetuar Login
+      operationId: efetuarLogin
+      tags:
+        - Login
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DadosAutenticacao'
+      responses:
+        200:
+          description: sucesso
+
+
 
 components:
   parameters:
@@ -331,3 +345,11 @@ components:
         valor:
           type: number
           example: 10
+
+    DadosAutenticacao:
+      type: object
+      properties:
+        login:
+          type: string
+        senha:
+          type: string
