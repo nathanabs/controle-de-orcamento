@@ -231,6 +231,10 @@ paths:
       responses:
         200:
           description: sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenResponse'
 
 
 
@@ -265,6 +269,12 @@ components:
         type: string
 
   schemas:
+
+    TokenResponse:
+      type: object
+      properties:
+        token:
+          type: string
 
     ReceitasResponse:
       type: object

@@ -2,9 +2,7 @@ package com.orcamento.cadastrospec.utils;
 
 import com.orcamento.cadastrospec.exception.DataException;
 
-import java.time.LocalDateTime;
-import java.time.Month;
-import java.time.Year;
+import java.time.*;
 
 public class DateUtils {
 
@@ -17,5 +15,9 @@ public class DateUtils {
         }
 
         return LocalDateTime.of(ano, Month.of(mes), 1, 0, 0);
+    }
+
+    public static Instant adicionarHoras(Integer horas) {
+        return LocalDateTime.now().plusHours(horas).toInstant(ZoneOffset.of("-03:00"));
     }
 }
