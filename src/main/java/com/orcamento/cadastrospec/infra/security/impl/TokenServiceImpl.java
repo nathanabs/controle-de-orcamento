@@ -1,10 +1,11 @@
-package com.orcamento.cadastrospec.security.impl;
+package com.orcamento.cadastrospec.infra.security.impl;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
+import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.orcamento.cadastrospec.model.Usuario;
-import com.orcamento.cadastrospec.security.TokenService;
+import com.orcamento.cadastrospec.infra.security.TokenService;
 import com.orcamento.cadastrospec.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -24,6 +25,22 @@ public class TokenServiceImpl implements TokenService {
                     .withExpiresAt(DateUtils.adicionarHoras(2))
                     .sign(algoritimo);
         } catch (JWTCreationException exception){
+            throw new RuntimeException(exception);
+        }
+    }
+
+    @Override
+    public String getSubject(String tokenJwt) {
+        try {
+            var algoritimo = Algorithm.HMAC256(secret);
+
+            var verifier = JWT.require(algoritimo)
+                    .withIssuer("API controle de orcamento")
+                    .build();
+
+            return verifier.verify(tokenJwt).getSubject();
+
+        } catch (JWTVerificationException exception){
             throw new RuntimeException(exception);
         }
     }

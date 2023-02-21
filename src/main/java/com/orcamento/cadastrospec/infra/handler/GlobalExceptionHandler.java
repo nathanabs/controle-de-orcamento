@@ -1,4 +1,4 @@
-package com.orcamento.cadastrospec.handler;
+package com.orcamento.cadastrospec.infra.handler;
 
 import com.orcamento.cadastrospec.exception.BaseException;
 import org.springframework.http.HttpStatus;

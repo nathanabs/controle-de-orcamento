@@ -4,7 +4,7 @@ import com.orcamento.cadastrospec.LoginApi;
 import com.orcamento.cadastrospec.model.DadosAutenticacao;
 import com.orcamento.cadastrospec.model.TokenResponse;
 import com.orcamento.cadastrospec.model.Usuario;
-import com.orcamento.cadastrospec.security.TokenService;
+import com.orcamento.cadastrospec.infra.security.TokenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
